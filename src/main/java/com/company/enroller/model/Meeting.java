@@ -16,7 +16,7 @@ public class Meeting {
     private long id;
 
     @Column
-    private String title;
+    private String name;
 
     @Column
     private String description;
@@ -32,8 +32,8 @@ public class Meeting {
         return id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
     public String getDescription() {
@@ -48,8 +48,8 @@ public class Meeting {
         this.id = id;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setDescription(String description) {

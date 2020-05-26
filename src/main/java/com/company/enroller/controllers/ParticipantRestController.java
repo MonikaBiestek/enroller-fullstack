@@ -30,6 +30,9 @@ public class ParticipantRestController {
         }
         return new ResponseEntity<Participant>(participant, HttpStatus.OK);
     }
+    
+    
+    
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseEntity<?> addParticipant(@RequestBody Participant participant) {
@@ -42,6 +45,10 @@ public class ParticipantRestController {
         return new ResponseEntity<Participant>(participant, HttpStatus.CREATED);
     }
 
+    
+    
+    
+    
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<?> delete(@PathVariable("id") String login) {
         Participant participant = participantService.findByLogin(login);
