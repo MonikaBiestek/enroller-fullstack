@@ -32,65 +32,51 @@
         methods: {
   
             addNewMeeting(meeting) {
-            this.$http.post("meetings", meeting)
-            .then((response) => {      
-            meeting.id=response.data.id
-        	this.meetings.push(meeting);
-            })
-            .catch(response => {
-            console.log("err"); //this.failure('Błąd przy dodawaniu spotkania. Kod odpowiedzi: ' + response.status));
-            });
-        
-        
-            },
+				this.$http.post("meetings", meeting)
+					.then((response) => {      
+						meeting.id=response.data.id
+						this.meetings.push(meeting);
+					})
+					.catch(response => alert('Błąd przy dodawaniu spotkania. Kod odpowiedzi: ' + response.status))
+			},
+
             addMeetingParticipant(meeting) {
-            this.$http.post("meetings/" + meeting.id + "/participants/" + this.username)
-            .then( (response) => {
-            meeting.participants.push(response.data.login)});
-            },
-            
-    
-           
+				this.$http.post("meetings/" + meeting.id + "/participants/" + this.username)
+					.then(response => meeting.participants.push(response.data.login))
+					.catch(response => alert('Błąd przy dodawaniu uczestnika. Kod odpowiedzi: ' + response.status))
+				},            
+              
             removeMeetingParticipant(meeting) {           
-            this.$http.delete("meetings/" + meeting.id + "/participants/" + this.username)
-            .then( () => {
-               meeting.participants.splice(meeting.participants.indexOf(this.username), 1);
-            })},
+				this.$http.delete("meetings/" + meeting.id + "/participants/" + this.username)
+					.then( () => meeting.participants.splice(meeting.participants.indexOf(this.username), 1))
+					.catch(response => alert('Błąd przy usuwaniu uczestnika. Kod odpowiedzi: ' + response.status))
+				},
            
 
             deleteMeeting(meeting) {
-            this.$http.delete("meetings/" + meeting.id)
-            .then( () => {
-               this.meetings.splice(this.meetings.indexOf(meeting), 1);
-            })},
-           
-            
-                     
+				this.$http.delete("meetings/" + meeting.id)
+					.then(() =>this.meetings.splice(this.meetings.indexOf(meeting), 1))
+					.catch(response => alert('Błąd przy usuwaniu spotkania. Kod odpowiedzi: ' + response.status))
+				},
+                    
         },
         
         mounted() {   
             
         this.$http.get('meetings')
-        .then(response => {
-        response.data.forEach(meeting=>{
-        meeting.participants = [];
-        this.meetings.push(meeting)
+			.then(response => {
+				response.data.forEach(meeting=>{
+				meeting.participants = [];
+				this.meetings.push(meeting)
         
-        this.$http.get('meetings/' + meeting.id + '/participants')
-        .then(response=>
-        {
-        response.data.forEach((participant=>
-        {
-        meeting.participants.push(participant.login);
-        }))})
-        
-        
-        
-        
-        
-         
-        });      
-     });
-
-    }}
+				this.$http.get('meetings/' + meeting.id + '/participants')
+					.then(response=>{
+						response.data.forEach((participant=>{
+						meeting.participants.push(participant.login);
+						}))})       
+				})
+				.catch(response => alert('Błąd przy pobieraniu listy spotkań. Kod odpowiedzi: ' + response.status))
+			});
+		}
+	}
 </script>
